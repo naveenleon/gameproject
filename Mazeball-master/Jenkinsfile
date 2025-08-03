@@ -1,0 +1,37 @@
+pipeline {
+    agent { label 'gameproject1' }
+    stages {
+        stage('git checkout') {
+            steps {
+                git 'https://github.com/naveenleon/gameproject.git'
+            }
+        }
+        stage('Build the Docker image') {
+            steps {
+                sh 'sudo docker build -t  gametry /root/jenkins/workspace/gamepro'
+                sh 'sudo docker tag gametry naveenneil/gametry:latest'
+                sh 'sudo docker tag gametry naveenneil/gametry:${BUILD_NUMBER}'
+            }
+        }
+        stage('Trivy Vulnerability Scan') {
+            steps {
+                script {
+                    sh 'sudo trivy image naveenneil/gametry:latest'
+                    sh 'sudo trivy image naveenneil/gametry:${BUILD_NUMBER}'
+                }
+            }
+        }
+        stage('Push the Docker image') {
+            steps {
+                sh 'sudo docker image push naveenneil/gametry:latest'
+                sh 'sudo docker image push naveenneil/gametry:${BUILD_NUMBER}'
+            }
+        }
+        stage('Deploy on Kubernetes') {
+            steps {
+                sh 'sudo kubectl apply -f /home/vijay/workspace/game-project/pod.yml'
+                sh 'sudo kubectl rollout restart deployment loadbalancer-pod'
+            }
+        }
+    }
+}
