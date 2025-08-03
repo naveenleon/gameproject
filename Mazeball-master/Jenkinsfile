@@ -8,7 +8,7 @@ pipeline {
         }
         stage('Build the Docker image') {
             steps {
-                sh 'sudo docker build -t  gametry /root/jenkins/workspace/gamepro'
+                sh 'sudo docker build -t  gametry /root/jenkins/workspace/gamepro/maze'
                 sh 'sudo docker tag gametry naveenneil/gametry:latest'
                 sh 'sudo docker tag gametry naveenneil/gametry:${BUILD_NUMBER}'
             }
