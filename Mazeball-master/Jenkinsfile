@@ -1,7 +1,7 @@
 pipeline {
     agent { label 'gameproject1' }
     stages {
-        stage('git checkout') {
+        stage('git ') {
             steps {
                 git 'https://github.com/naveenleon/gameproject.git'
             }
