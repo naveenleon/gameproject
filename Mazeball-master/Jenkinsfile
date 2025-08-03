@@ -3,7 +3,7 @@ pipeline {
     stages {
         stage('git ') {
             steps {
-                git 'https://github.com/naveenleon/gameproject.git'
+                git 'ls'
             }
         }
         stage('Build the Docker image') {
